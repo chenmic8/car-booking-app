@@ -18,17 +18,17 @@ const AuthProvider = ({ children }) => {
   const { setIsLoading, setUser, setErrorMessage } = useContext(LoadingContext);
 
   const navigate = useNavigate();
+  const storeToken = (token) => {
+    localStorage.setItem("authToken", token);
+  };
 
   const googleSignup = useGoogleLogin({
     onSuccess: async ({ code }) => {
       try {
-        const tokens = await axios.post(
-          "http://localhost:4000/auth/google/signup",
-          {
-            // http://localhost:4000/auth/google backend that will exchange the code
-            code,
-          }
-        );
+        const tokens = await axios.post("http://localhost:4000/auth/google", {
+          // http://localhost:4000/auth/google backend that will exchange the code
+          code,
+        });
         console.log(tokens);
         const { accessToken, user, authToken } = tokens.data;
         localStorage.setItem("accessToken", accessToken);
@@ -86,7 +86,9 @@ const AuthProvider = ({ children }) => {
     authenticateUser();
   }, []);
   return (
-    <AuthContext.Provider value={{ googleSignup, authenticateUser, logout }}>
+    <AuthContext.Provider
+      value={{ googleSignup, authenticateUser, logout, storeToken }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,5 @@
-import { createContext, useState } from "react";
-import { get } from "../services/carService";
+import { createContext, useEffect, useState } from "react";
+import { get } from "../services/dataService";
 
 const LoadingContext = createContext();
 
@@ -18,6 +18,10 @@ const LoadingProvider = ({ children }) => {
       setCars(results.data);
     });
   };
+
+  useEffect(()=>{
+    getToken();
+  },[user])
 
   return (
     <LoadingContext.Provider

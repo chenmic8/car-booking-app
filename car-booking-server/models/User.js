@@ -14,7 +14,11 @@ const userSchema = new Schema(
       default: "rider",
     },
     address: { type: Schema.Types.ObjectId, ref: "Location" },
-    profilePic: { type: String },
+    profilePic: {
+      type: String,
+      default:
+        "https://austinpeopleworks.com/wp-content/uploads/2020/12/blank-profile-picture-973460_1280-300x300.png",
+    },
   },
   { timestamps: true, timeseries: true }
 );
