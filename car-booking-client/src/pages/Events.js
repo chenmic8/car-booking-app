@@ -18,6 +18,9 @@ const Events = () => {
   //   getFamilyEvents();
   // }, []);
   // console.log("fmaily snapshots on EVENTS PAGE", familySnapshots);
+  useEffect(() => {
+    console.log("GOT FAM SNAPSHOTS");
+  }, [familySnapshots]);
 
   return (
     <>

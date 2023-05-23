@@ -30,7 +30,11 @@ router.get("/details/:familyId", async (req, res, next) => {
 
 router.get("/users-families/:userId", async (req, res, next) => {
   try {
-    const foundFamilies = await Family.find({ users: req.params.userId });
+    console.log("GETTING FAMILY FROM USER ID❤️");
+    const foundFamilies = await Family.find({ users: req.params.userId })
+      .populate("address")
+      .populate("users")
+      .populate("cars");
     res.json(foundFamilies);
   } catch (error) {
     res.status(404).json({ message: error });
@@ -41,7 +45,7 @@ router.get("/user-family/:userId", async (req, res, next) => {
   try {
     const foundFamily = await Family.findOne({ users: req.params.userId })
       .populate("users")
-      .populate('');
+      .populate("");
     res.json(foundFamily);
   } catch (error) {
     res.status(404).json({ message: error });

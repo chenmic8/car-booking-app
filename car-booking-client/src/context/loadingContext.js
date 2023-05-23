@@ -43,7 +43,7 @@ const LoadingProvider = ({ children }) => {
       const familySnapshots = await get(
         `/snapshots/family-snapshots/${userFamily.data._id}`
       );
-      const familyCars = await get(`/cars/family-cars/${userFamily.data._id}`);
+      // const familyCars = await get(`/cars/family-cars/${userFamily.data._id}`);
       const familyLocations = await get(
         `/locations/family-locations/${userFamily.data._id}`
       );
@@ -56,8 +56,8 @@ const LoadingProvider = ({ children }) => {
       console.log("FOUND USERS FAMILY CARS: ", familyCars.data);
 
       setFamily(userFamily.data);
+      setFamilyCars(userFamily.data.cars);
       setFamilySnapshots(familySnapshots.data);
-      setFamilyCars(familyCars.data);
       setFamilyLocations(familyLocations.data);
       // setFamilyEvents(familyEvents.data);
       setIsLoading(false);
