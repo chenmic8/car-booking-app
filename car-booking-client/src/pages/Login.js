@@ -1,12 +1,16 @@
-import React, { useContext } from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { post } from "../services/dataService";
 import { AuthContext } from "../context/authContext";
 import { LoadingContext } from "../context/loadingContext";
+import { TextField, Stack, Box, Button, Typography, Link } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { googleSignup } = useContext(AuthContext);
   const { storeToken } = useContext(AuthContext);
   const { setUser, getToken } = useContext(LoadingContext);
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,16 +28,55 @@ const Login = () => {
       console.log("FOUND USER: ", foundUser.data);
       storeToken(foundUser.data.authToken);
       setUser(foundUser.data.user);
+      navigate("/events");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setLoginErrorMessage(error.response.data.message);
     }
   };
   return (
     <>
-      <h2>Login</h2>
-      {loginErrorMessage && <p>{loginErrorMessage}</p>}
-      <form onSubmit={handleSubmit}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "80vh",
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          <Stack justifyContent='center' alignItems='center'>
+            <Typography variant='h5'>Login</Typography>
+            {loginErrorMessage && <Typography>{loginErrorMessage}</Typography>}
+            <TextField
+              label='Email'
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              margin='normal'
+            />
+            <TextField
+              label='Password'
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              margin='normal'
+            />
+            <Stack gap={2}>
+              <Button type='submit' variant='contained' color='primary'>
+                Log In
+              </Button>
+              <Button variant='outlined' onClick={googleSignup}>
+                Google Login
+              </Button>
+              <Link href='/signup'>Don't have account?</Link>
+            </Stack>
+          </Stack>
+        </form>
+      </Box>
+      {/* 
         <label>Email:</label>
         <input
           type='email'
@@ -47,8 +90,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type='submit'>Login</button>
-      </form>
+        <button type='submit'>Login</button> */}
     </>
   );
 };

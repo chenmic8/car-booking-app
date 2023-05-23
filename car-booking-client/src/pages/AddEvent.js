@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import { LoadingContext } from "../context/loadingContext";
+import { post } from "../services/dataService";
 import axios from "axios";
 // import { post } from "../services/carService";
 
-const NewEvent = () => {
+const AddEvent = () => {
+  const { cars } = useContext(LoadingContext);
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -13,35 +15,64 @@ const NewEvent = () => {
   const [driver, setDriver] = useState("");
   const [riders, setRiders] = useState("");
   const [car, setCar] = useState("");
+  const [eventFormErrorMessage, setEventFormErrorMessage] = useState("");
+
+  const dateTimeDifferenceInMinutes = (startTime, endTime) => {
+    const startMinutes = new Date(startTime).getTime();
+    const endMinutes = new Date(endTime).getTime();
+    return (endMinutes - startMinutes) / 1000 / 60;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (
-    //   !title ||
-    //   !startTime ||
-    //   !endTime ||
-    //   !startLocation ||
-    //   !endLocation ||
-    //   !driver ||
-    //   !riders ||
-    //   !car
-    // )
-    //   return;
-    console.log(
-      title,
-      startTime,
-      endTime,
-      startLocation,
-      endLocation,
-      driver,
-      riders,
-      car
-    );
-    axios.post("/api/create-event");
+    if (
+      !title ||
+      !startTime ||
+      !endTime
+      // ADD THESE WHEN API IS IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // !startLocation ||
+      // !endLocation ||
+      // !driver ||
+      // !riders ||
+      // !car
+    ) {
+      setEventFormErrorMessage("Please provide all the required fields");
+      return;
+    } else if (dateTimeDifferenceInMinutes(startTime, endTime) < 0) {
+      setEventFormErrorMessage("The start time has to be before the end time");
+      return;
+    } else {
+      setEventFormErrorMessage("");
+    }
+    // (dateTimeDifferenceInMinutes(startTime, endTime));
+
+    // dateToMinutes(startTime);
+    // dateToMinutes(endTime);
+    //TEST IF START TIME IS BEFORE END TIME
+    //CALCULATE LENGTH OF EVENT
+
+    // console.log(
+    //   title,
+    //   startTime,
+    //   endTime,
+    //   startLocation,
+    //   endLocation,
+    //   driver,
+    //   riders,
+    //   car
+    // );
+    try {
+      console.log("HERE IS FAKE EVENT CREATION AXIOS POST REQUEST");
+      
+
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
-      <h2>NewEvent</h2>
+      <h2>AddEvent</h2>
+      {eventFormErrorMessage && <p>{eventFormErrorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <label htmlFor='title'>Title:</label>
         <input
@@ -128,4 +159,4 @@ const NewEvent = () => {
   );
 };
 
-export default NewEvent;
+export default AddEvent;

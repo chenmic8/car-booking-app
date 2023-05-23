@@ -10,35 +10,51 @@ import Cars from "./pages/Cars";
 import Navbar from "./components/Navbar";
 import Signup from "./pages/Signup";
 import Events from "./pages/Events";
-import NewEvent from "./pages/NewEvent";
+import AddEvent from "./pages/AddEvent";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import AddCar from "./pages/AddCar";
+import EditCar from "./pages/EditCar";
+import Landing from "./pages/Landing";
+import Family from "./pages/Family";
+import Locations from "./pages/Locations";
 
 function App() {
   const { getToken } = useContext(LoadingContext);
 
   return (
     <div className='App'>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
+      {/* <Navbar /> */}
 
-        {/* PROTECTED ROUTES */}
-        {!getToken() && (
-          <>
+      {!getToken() && (
+        <>
+          <Routes>
+            <Route path='/' element={<Landing />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/login' element={<Login />} />
-          </>
-        )}
-        {getToken() && (
-          <>
-            <Route path='/cars' element={<Cars />} />
-            <Route path='/new-event' element={<NewEvent />} />
-            <Route path='/events' element={<Events />} />
-            <Route path='/profile' element={<Profile />} />
-          </>
-        )}
-      </Routes>
+            <Route path='*' element={<Landing />} />
+          </Routes>
+        </>
+      )}
+
+      {/* PROTECTED ROUTES */}
+      {getToken() && (
+        <>
+          <Navbar>
+            <Routes>
+              <Route path='/cars' element={<Cars />} />
+              <Route path='/cars/add-car' element={<AddCar />} />
+              <Route path='/cars/details/:carId' element={<EditCar />} />
+              <Route path='/new-event' element={<AddEvent />} />
+              <Route path='/events' element={<Events />} />
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/family' element={<Family />} />
+              <Route path='/locations' element={<Locations />} />
+              <Route path='*' element={<p>404 not found</p>} />
+            </Routes>
+          </Navbar>
+        </>
+      )}
     </div>
   );
 }

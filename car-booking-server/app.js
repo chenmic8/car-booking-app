@@ -9,6 +9,10 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
 var carsRouter = require("./routes/cars");
+var eventsRouter = require("./routes/events");
+var locationsRouter = require("./routes/locations");
+var familiesRouter = require("./routes/families");
+var snapshotsRouter = require("./routes/snapshots");
 
 var app = express();
 
@@ -26,6 +30,10 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use("/cars", carsRouter);
+app.use("/events", eventsRouter);
+app.use("/locations", locationsRouter);
+app.use("/families", familiesRouter);
+app.use("/snapshots", snapshotsRouter);
 
 mongoose
   .connect(process.env.MONGODB_URI)

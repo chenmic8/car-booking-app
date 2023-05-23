@@ -1,10 +1,21 @@
-import { get } from "../services/dataService"
-const Cars = () => {
-  //get all cars
-  get('/')
-  return (
-    <div>Cars</div>
-  )
-}
+import { useContext } from "react";
+import { LoadingContext } from "../context/loadingContext";
+import { NavLink } from "react-router-dom";
+import CarCard from "../components/CarCard";
 
-export default Cars
+const Cars = () => {
+  const { familyCars } = useContext(LoadingContext);
+  // console.log("CARS: ", cars);
+  return (
+    <>
+      add car
+      {familyCars.map((car) => {
+        return (
+          <CarCard key={car._id} car={car}/>
+        );
+      })}
+    </>
+  );
+};
+
+export default Cars;

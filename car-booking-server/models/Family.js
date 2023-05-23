@@ -5,7 +5,7 @@ const familySchema = new Schema(
     name: {type: String, default: 'Family'},
     cars: [{type: Schema.Types.ObjectId, ref: "Car"}],
     users: [{type: Schema.Types.ObjectId, ref: "User"}],
-    locations: [{type: Schema.Types.ObjectId, ref: "Location"}]
+    address: {type: Schema.Types.ObjectId, ref: "Location"}
   },
   { timestamps: true, timeseries: true }
 );

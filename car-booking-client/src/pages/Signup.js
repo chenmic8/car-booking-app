@@ -3,6 +3,17 @@ import { post } from "../services/authService";
 import { LoadingContext } from "../context/loadingContext";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Stack,
+  Box,
+  Button,
+  Typography,
+  Link,
+  Select,
+  MenuItem,
+  InputLabel,
+} from "@mui/material";
 
 const Signup = () => {
   const { googleSignup, storeToken } = useContext(AuthContext);
@@ -49,11 +60,11 @@ const Signup = () => {
       !lastName ||
       !password ||
       !birthdate ||
-      !phone ||
-      !role ||
-      !address
+      // !phone ||
+      !role
+      // !address
     ) {
-      setSignupError("Please fill in all fields");
+      setSignupError("Please fill in all required fields");
       return;
     }
 
@@ -98,7 +109,94 @@ const Signup = () => {
 
   return (
     <>
-      <h2>google signup/login</h2>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "80vh",
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          <Stack justifyContent='center' alignItems='center'>
+            <Typography variant='h5'>Sign up</Typography>
+            {signupError && <Typography>{signupError}</Typography>}
+            <TextField
+              label='First Name'
+              type='text'
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              margin='normal'
+            />
+            <TextField
+              label='Last Name'
+              type='text'
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              margin='normal'
+            />
+            <TextField
+              label='Email'
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              margin='normal'
+            />
+            <TextField
+              label='Password'
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              margin='normal'
+            />
+            <TextField
+              label='Birthdate'
+              type='date'
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
+              required
+              margin='normal'
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label='Phone Number'
+              type='number'
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              margin='normal'
+            />
+            <InputLabel id='select-role-label'>Role</InputLabel>
+            <Select
+              labelId='select-role-label'
+              id='role-select'
+              value={role}
+              label='Role'
+              margin='normal'
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <MenuItem value='rider'>Passenger</MenuItem>
+              <MenuItem value='driver'>Driver</MenuItem>
+            </Select>
+            <br />
+            <Stack gap={2}>
+              <Button type='submit' variant='contained' color='primary'>
+                Sign up
+              </Button>
+              <Button variant='outlined' onClick={googleSignup}>
+                Google Sign up
+              </Button>
+              <Link href='/login'>Already have account?</Link>
+            </Stack>
+          </Stack>
+        </form>
+      </Box>
+      {/* <h2>google signup/login</h2>
       <button onClick={googleSignup}>signup/login with google</button>
       <h2>Sign up</h2>
       {signupError && <p>{signupError}</p>}
@@ -163,7 +261,7 @@ const Signup = () => {
         />
         <br />
         <button type='submit'>Submit</button>
-      </form>
+      </form> */}
     </>
   );
 };

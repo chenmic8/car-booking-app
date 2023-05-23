@@ -33,6 +33,8 @@ const AuthProvider = ({ children }) => {
         const { accessToken, user, authToken } = tokens.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("authToken", authToken);
+
+        navigate("/events");
         setUser(user);
       } catch (error) {
         console.log("response", error.response.data);
