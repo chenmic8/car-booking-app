@@ -13,6 +13,7 @@ const LoadingProvider = ({ children }) => {
   const [familySnapshots, setFamilySnapshots] = useState([]);
   const [familyCars, setFamilyCars] = useState([]);
   const [familyLocations, setFamilyLocations] = useState([]);
+  const [familyUsers, setFamilyUsers] = useState([]);
 
   // const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ const LoadingProvider = ({ children }) => {
 
       setFamily(userFamily.data);
       setFamilyCars(userFamily.data.cars);
+      setFamilyUsers(userFamily.data.users);
       // const familyDatas = await Promise.all([
       //   familySnapshotsPromise,
       //   familyLocationsPromise,
@@ -65,7 +67,7 @@ const LoadingProvider = ({ children }) => {
         "FOUND USERS FAMILY SNAPSHOTS 😊😊😊: ",
         familySnapshots.data
       );
-      
+
       const familyLocations = await familyLocationsPromise;
       setFamilyLocations(familyLocations.data);
       console.log("THESE ARE THE FAMILY LOCATIONS, 👍", familyLocations);
@@ -136,6 +138,8 @@ const LoadingProvider = ({ children }) => {
         setFamilyCars,
         familyLocations,
         setFamilyLocations,
+        familyUsers,
+        setFamilyUsers,
       }}
     >
       {children}
