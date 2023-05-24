@@ -169,6 +169,14 @@ const Navbar = ({ children }) => {
               <ListItemText primary='Logout' />
             </ListItemButton>
           </ListItem>
+          <ListItem key='images' disablePadding>
+            <ListItemButton href={"/images"}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary='Images' />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Main open={open}>

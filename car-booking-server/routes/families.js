@@ -2,6 +2,7 @@ var express = require("express");
 // const { google } = require("googleapis");
 var router = express.Router();
 const Family = require("../models/Family");
+const Snapshot = require("../models/Snapshot");
 
 // const oauth2Client = new google.auth.OAuth2(
 //   CLIENT_ID,
@@ -28,16 +29,53 @@ router.get("/details/:familyId", async (req, res, next) => {
   }
 });
 
-router.get("/users-families/:userId", async (req, res, next) => {
+router.get("/user-family/:userId", async (req, res, next) => {
   try {
     console.log("GETTING FAMILY FROM USER ID❤️");
-    const foundFamilies = await Family.find({ users: req.params.userId })
-      .populate("address")
-      .populate("users")
-      .populate("cars");
-    res.json(foundFamilies);
+    const foundFamily = await Family.findOne({ users: req.params.userId })
+      // .populate("address")
+      // .populate("users")
+      // .populate("cars");
+    res.json(foundFamily);
   } catch (error) {
     res.status(404).json({ message: error });
+  }
+});
+
+//GETS FAMILY SNAPSHOTS, LOCATIONS, AND FAMILY DETAILS
+router.get("/user-family-info/:userId", async (req, res, next) => {
+  try {
+    console.log("GETTING FAMILY FROM USER ID❤️");
+    const foundFamily = await Family.findOne({ users: req.params.userId })
+      .populate({ path: "users", populate: { path: "locations" } })
+      .populate("address")
+      .populate("cars");
+    //GET FAMILY LOCATIONS GIVEN LIST OF USERS WITH POPULATED LOCATIONS
+    console.log("got family", foundFamily);
+    let familyLocations = [];
+    for (user of foundFamily.users) {
+      if (user.locations) {
+        familyLocations = familyLocations.concat(user.locations);
+      }
+    }
+    console.log("got family locations", familyLocations);
+    //GET FAMILY SNAPSHOTS
+    const foundSnapshots = await Snapshot.find({
+      family: foundFamily._id,
+    }).populate("events");
+    // .populate("family");
+    console.log("got family snapshots", foundSnapshots);
+    res.json({
+      familyId: foundFamily._id,
+      familyName: foundFamily.name,
+      familyCars: foundFamily.cars,
+      familyUsers: foundFamily.users,
+      familyAddress: foundFamily.address,
+      familyLocations: familyLocations,
+      familyEvents: foundSnapshots.events,
+    });
+  } catch (error) {
+    res.status(404).json({ message: "issue getting family information" });
   }
 });
 

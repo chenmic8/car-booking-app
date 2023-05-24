@@ -7,6 +7,29 @@ const isAuthenticated = require("../middleware/isAuthenticated");
 
 const { OAuth2Client } = require("google-auth-library");
 
+// const { google } = require("googleapis");
+
+// const oauth2Client = new google.auth.OAuth2(
+//   process.env.CLIENT_ID,
+//   process.env.CLIENT_SECRET,
+//   url
+// );
+
+// // generate a url that asks permissions for Blogger and Google Calendar scopes
+// const scopes = [
+//   "https://www.googleapis.com/auth/calendar",
+//   "openid https://www.googleapis.com/auth/userinfo.profile",
+//   "https://www.googleapis.com/auth/userinfo.email",
+// ];
+
+// const url = oauth2Client.generateAuthUrl({
+//   // 'online' (default) or 'offline' (gets refresh_token)
+//   access_type: "offline",
+
+//   // If you only need one scope you can pass it as a string
+//   scope: scopes,
+// });
+
 const saltRounds = 10;
 
 const oAuth2Client = new OAuth2Client(
@@ -21,13 +44,25 @@ const oAuth2Client = new OAuth2Client(
  *
  ************************/
 router.post("/google", async (req, res) => {
+  // console.log(req.body);
   try {
     const { tokens } = await oAuth2Client.getToken(req.body.code); // exchange code for tokens
+    console.log(tokens);
     var profileInfoBase64Url = tokens.id_token.split(".")[1];
     var decodedProfileInfo = JSON.parse(atob(profileInfoBase64Url));
     const { email, given_name, family_name, picture } = decodedProfileInfo;
 
-    const foundUser = await User.findOne({ email });
+    const foundUser = await User.findOneAndUpdate(
+      { email },
+      {
+        email,
+        firstName: given_name,
+        lastName: family_name,
+        profilePic: picture,
+        refreshToken: tokens.refresh_token,
+      },
+      { new: true, upsert: true }
+    );
     if (foundUser) {
       const {
         firstName,
@@ -153,16 +188,15 @@ router.post("/login", async (req, res) => {
   try {
     const foundUser = await User.findOne({ email });
     if (!foundUser.password) {
-      res
-        .status(400)
-        .json(
-          {message: "Please use google authentication and set a password in profile settings"}
-        );
+      res.status(400).json({
+        message:
+          "Please use google authentication and set a password in profile settings",
+      });
       return;
     }
     const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
     if (!passwordCorrect) {
-      res.status(401).json({message: "Incorrect password or email"});
+      res.status(401).json({ message: "Incorrect password or email" });
       return;
     }
     const {
@@ -193,7 +227,7 @@ router.post("/login", async (req, res) => {
     res.status(200).json({ authToken: authToken, user: payload });
   } catch (error) {
     console.log("LOGIN ERROR CATCH: ", error);
-    res.status(401).json({message: "Incorrect password or email"});
+    res.status(401).json({ message: "Incorrect password or email" });
   }
 });
 

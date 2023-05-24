@@ -13,6 +13,7 @@ var eventsRouter = require("./routes/events");
 var locationsRouter = require("./routes/locations");
 var familiesRouter = require("./routes/families");
 var snapshotsRouter = require("./routes/snapshots");
+var imagesRouter = require("./routes/images");
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use("/events", eventsRouter);
 app.use("/locations", locationsRouter);
 app.use("/families", familiesRouter);
 app.use("/snapshots", snapshotsRouter);
+app.use("/images", imagesRouter);
 
 mongoose
   .connect(process.env.MONGODB_URI)

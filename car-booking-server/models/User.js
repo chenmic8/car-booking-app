@@ -20,6 +20,8 @@ const userSchema = new Schema(
         "https://austinpeopleworks.com/wp-content/uploads/2020/12/blank-profile-picture-973460_1280-300x300.png",
     },
     locations: [{ type: Schema.Types.ObjectId, ref: "Location" }],
+    refreshToken: String,
+    
   },
   { timestamps: true, timeseries: true }
 );

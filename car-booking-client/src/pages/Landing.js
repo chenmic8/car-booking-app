@@ -4,6 +4,7 @@ import { AuthContext } from "../context/authContext";
 
 const Landing = () => {
   const { googleSignup } = useContext(AuthContext);
+
   return (
     <div id='landing'>
       <Container fixed>
@@ -16,8 +17,12 @@ const Landing = () => {
           direction='row'
           spacing={3}
         >
-          <Button href='/login' variant='contained'>Login</Button>
-          <Button href='/signup' variant='outlined'>Sign up</Button>
+          <Button href='/login' variant='contained'>
+            Login
+          </Button>
+          <Button href='/signup' variant='outlined'>
+            Sign up
+          </Button>
         </Stack>
       </Container>
       <br />

@@ -18,9 +18,26 @@ import EditCar from "./pages/EditCar";
 import Landing from "./pages/Landing";
 import Family from "./pages/Family";
 import Locations from "./pages/Locations";
+import Images from "./pages/Images";
+
+import { get } from "./services/dataService";
 
 function App() {
-  const { getToken } = useContext(LoadingContext);
+  const { getToken, userId, setFamilyId } = useContext(LoadingContext);
+
+  // const getFamilyId = async () => {
+  //   const familyResponse = await get(`/families/user-family/${userId}`)
+  //   setFamilyId(familyResponse.data._id)
+  // };
+
+  // useEffect(() => {
+  //   getFamilyId();
+  
+  //   return () => {
+  //     console.log('unmounting app.js')
+  //   }
+  // }, [userId])
+  
 
   return (
     <div className='App'>
@@ -50,6 +67,7 @@ function App() {
               <Route path='/profile' element={<Profile />} />
               <Route path='/family' element={<Family />} />
               <Route path='/locations' element={<Locations />} />
+              <Route path='/images' element={<Images />} />
               <Route path='*' element={<p>404 not found</p>} />
             </Routes>
           </Navbar>

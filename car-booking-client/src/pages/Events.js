@@ -1,46 +1,54 @@
 import { Box, Grid, Typography, Button } from "@mui/material";
 
 import EventCard from "../components/EventCard";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../context/loadingContext";
+import { get } from "../services/dataService";
 // import { Button } from "@mui/material";
 
 const Events = () => {
-  // const { events, setEvents } = useContext(LoadingContext);
-  const { familySnapshots } = useContext(LoadingContext);
-  // console.log("EVENTS PAGE FAMILY EVENTS: ", familyEvents);
-  // const logFamilyEvents = async () => {
-  //   console.log("EVENTS PAGE GETTING FAMILY EVENTS: ", getFamilyEvents());
+  const { familyId, userId } = useContext(LoadingContext);
+  const [events, setEvents] = useState([]);
+
+  // const getEvents = async () => {
+  //   try {
+  //     const eventsResponse = await get(`/events/family-events/${familyId}`);
+  //     setEvents(eventsResponse.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
   // };
-  // logFamilyEvents();
+
+  // const getFamilyId = async () => {
+  //   try {
+  //     const familyResponse = await get(`families/user-family/${userId}`);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   // useEffect(() => {
-  //   console.log("THIS IS THE FAMILY: ", family);
-  //   getFamilyEvents();
-  // }, []);
-  // console.log("fmaily snapshots on EVENTS PAGE", familySnapshots);
-  useEffect(() => {
-    console.log("GOT FAM SNAPSHOTS");
-  }, [familySnapshots]);
+  //   // getEvents();
+  //   console.log("EVENTS: ", events);
+  // }, [familyId]);
 
   return (
     <>
-      {familySnapshots ? (
+      events
+      {/* {events ? (
         <>
           <Button>Add Event</Button>
           <Typography>Show week</Typography>
           <Typography>Show day</Typography>
 
-          {familySnapshots.map((snapshot) => {
-            // console.log(snapshot.events,'snapshot date')
-            return snapshot.events.map((event) => {
-              // console.log(event.name,'event name😊')
-              return <EventCard key={event._id} event={event} />;
-            });
+          {events.map((event) => {
+            return <EventCard key={event._id} event={event} />;
+            // });
           })}
         </>
       ) : (
         <p>loading...</p>
-      )}
+      )} */}
     </>
 
     //FOR SEVEN COLUMNS, ONE FOR EACH DAY OF THE WEEK!!!!!!!!!!!!!!!!!!!!!!!
