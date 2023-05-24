@@ -45,6 +45,7 @@ router.get("/user-family/:userId", async (req, res, next) => {
   try {
     const foundFamily = await Family.findOne({ users: req.params.userId })
       .populate("users")
+      .populate("cars")
       .populate("");
     res.json(foundFamily);
   } catch (error) {

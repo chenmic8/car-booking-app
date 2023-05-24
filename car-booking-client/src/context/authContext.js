@@ -29,13 +29,14 @@ const AuthProvider = ({ children }) => {
           // http://localhost:4000/auth/google backend that will exchange the code
           code,
         });
-        console.log(tokens);
+        console.log("TOKENS",tokens);
         const { accessToken, user, authToken } = tokens.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("authToken", authToken);
 
-        navigate("/events");
         setUser(user);
+        setIsLoading(false);
+        navigate("/events");
       } catch (error) {
         console.log("response", error.response.data);
         navigate("/");
