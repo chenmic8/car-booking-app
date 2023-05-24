@@ -18,10 +18,10 @@ import {
 
 const EventCard = ({ event }) => {
   const formatDate = (date) => {};
-
+// console.log('EVENT: ')
   const handleClick = (e) => {
     e.preventDefault();
-    console.log("CLICKED!THIS IS THIS EVENT'S ID", event._id);
+    console.log("CLICKED!THIS IS THIS EVENT'S ID", event);
   };
 
   return (
@@ -34,7 +34,7 @@ const EventCard = ({ event }) => {
           <Typography sx={{ mb: 1.5 }} color='text.secondary'>
             {event.beginTime} - {event.endTime}
           </Typography>
-          <Typography variant='body2'>{event.endLocation.name}</Typography>
+          {event.endLocation && <Typography variant='body2'>{event.endLocation.name}</Typography>}
         </CardContent>
       </CardActionArea>
     </Card>

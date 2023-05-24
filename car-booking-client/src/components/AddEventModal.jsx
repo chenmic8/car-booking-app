@@ -17,7 +17,7 @@ const AddEvent = () => {
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [driver, setDriver] = useState(user._id);
-  const [riders, setRiders] = useState("");
+  const [riders, setRiders] = useState([]);
   const [car, setCar] = useState(familyCars[0]._id);
   const [eventFormErrorMessage, setEventFormErrorMessage] = useState("");
 
@@ -32,13 +32,13 @@ const AddEvent = () => {
     if (
       !title ||
       !startTime ||
-      !endTime
+      !endTime||
       // ADD THESE WHEN API IS IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      // !startLocation ||
-      // !endLocation ||
-      // !driver ||
+      !startLocation ||
+      !endLocation ||
+      !driver ||
       // !riders ||
-      // !car
+      !car
     ) {
       setEventFormErrorMessage("Please provide all the required fields");
       return;
@@ -77,18 +77,20 @@ const AddEvent = () => {
         car,
       });
 
-      // const createdEvent = post("/events/create", {
-      //   title,
-      //   startTime,
-      //   endTime,
-      //   startLocation,
-      //   endLocation,
-      //   driver,
-      //   riders,
-      //   car,
-      // });
-      // console.log("CREATED AN EVENT: ", createdEvent.data);
+      const createdEvent = post(`/events/create/${family._id}`, {
+        title,
+        beginTime: startTime,
+        endTime,
+        startLocation,
+        endLocation,
+        driver,
+        riders,
+        car,
+        distanceMeters: 1
+      });
+      console.log("CREATED AN EVENT: ", createdEvent.data);
     } catch (error) {
+      setEventFormErrorMessage("Server Error")
       console.log(error);
     }
   };
@@ -168,9 +170,9 @@ const AddEvent = () => {
             <select
               name='startLocation'
               id='startLocation'
-              onChange={(e) => setStartLocation(e.target.value)}
+              onChange={(e) => setEndLocation(e.target.value)}
             >
-              <option value={family.address._id} selected>{family.address.name}</option>
+              <option value=""></option>
               {familyLocations.map((location) => {
                 return <option value={location._id}>{location.name}</option>;
               })}

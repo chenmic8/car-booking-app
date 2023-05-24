@@ -10,7 +10,7 @@ const bookingDetailsSchema = new Schema(
       required: true,
       default: () => Date.now() + 60 * 60 * 1000,
     },
-    miles: { type: mongoose.Types.Decimal128, required: true, default: 10 },
+    distanceMeters: { type: mongoose.Types.Decimal128, default: 10 },
     startLocation: {
       type: Schema.Types.ObjectId,
       ref: "Location",
@@ -21,10 +21,19 @@ const bookingDetailsSchema = new Schema(
       ref: "Location",
       required: true,
     },
-    driver: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    driver: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    },
     riders: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    car: { type: Schema.Types.ObjectId, ref: "Car", required: true },
-    location: { type: Schema.Types.ObjectId, ref: "Location", required: true },
+    car: {
+      type: Schema.Types.ObjectId,
+      ref: "Car",
+      required: true
+    },
+    googleId: String,
+    // location: { type: Schema.Types.ObjectId, ref: "Location",  },
   },
   { timestamps: true, timeseries: true }
 );
