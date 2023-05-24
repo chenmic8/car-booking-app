@@ -131,6 +131,7 @@ const LoadingProvider = ({ children }) => {
   //     console.log(error);
   //   }
   // };
+  console.log('THIS IS A TEST')
   useEffect(() => {
     getToken();
     // getFamilyInfo();
