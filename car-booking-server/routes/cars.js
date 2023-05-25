@@ -52,25 +52,28 @@ router.post("/create", async (req, res, next) => {
     res.status(404).json({ message: error });
   }
 });
+
+//create car with family pointing to it
 router.post("/create/:familyId", async (req, res, next) => {
   console.log("CREATING CAR");
+
   try {
     const createdCar = await Car.create(req.body);
-    
-    await Family.findOneAndUpdate(
+
+    const newFamily = await Family.findOneAndUpdate(
       { _id: req.params.familyId },
-      { $addToSet: { cars: req.body } },
+      { $addToSet: { cars: createdCar._id } },
       { new: true, upsert: true }
     );
-    
+
     res.json(createdCar);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(500).json({ message: error });
   }
 });
 
 router.post("/update/:carId", async (req, res, next) => {
-  console.log("UPDATING CAR");
+  console.log("UPDATING CAR", req.body, "with this id", req.params.carId);
   try {
     const updatedCar = await Car.findByIdAndUpdate(req.params.carId, req.body, {
       new: true,
@@ -78,7 +81,7 @@ router.post("/update/:carId", async (req, res, next) => {
     console.log("UPDATED CAR: ", updatedCar);
     res.json(updatedCar);
   } catch (error) {
-    res.status(404).json({ message: error });
+    res.status(500).json({ message: error });
   }
 });
 
