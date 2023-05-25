@@ -5,7 +5,7 @@ const LoadingContext = createContext();
 const LoadingProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [dataIsLoading, setDataIsLoading] = useState(true)
   const [cars, setCars] = useState([]);
   const [events, setEvents] = useState([]);
   const [family, setFamily] = useState({});
@@ -41,7 +41,7 @@ const LoadingProvider = ({ children }) => {
       setFamilyUsers(familyData.family.users);
       setFamilySnapshots(familyData.snapshots);
 
-      setIsLoading(false);
+      setDataIsLoading(false);
     } catch (error) {
       console.log(error);
     }

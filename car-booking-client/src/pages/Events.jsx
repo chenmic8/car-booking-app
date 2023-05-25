@@ -20,7 +20,7 @@ const style = {
 };
 
 const Events = () => {
-  const { isLoading, familyEvents } = useContext(LoadingContext);
+  const { dataIsLoading, familyEvents } = useContext(LoadingContext);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -28,7 +28,7 @@ const Events = () => {
 
   return (
     <>
-      {!isLoading ? (
+      {!dataIsLoading ? (
         <>
           <Button onClick={handleOpen}>Add Event</Button>
           <Typography>Show week</Typography>
