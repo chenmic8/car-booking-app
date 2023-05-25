@@ -34,7 +34,7 @@ const LoadingProvider = ({ children }) => {
 
       let allFamilyEvents = [];
       for (let snapshot of familyData.snapshots) {
-        allFamilyEvents = [...allFamilyEvents, snapshot.events];
+        allFamilyEvents = [...allFamilyEvents, ...snapshot.events];
       }
       setFamilyEvents(allFamilyEvents);
       setFamilyUsers(familyData.users);

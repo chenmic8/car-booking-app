@@ -27,6 +27,10 @@ const Events = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  useEffect(()=>{
+    console.log(familyEvents)
+  })
+
   return (
     <>
       {!isLoading ? (
@@ -35,8 +39,8 @@ const Events = () => {
           <Typography>Show week</Typography>
           <Typography>Show day</Typography>
 
-          {familyEvents.map((event,i) => {
-            return <EventCard key={i} event={event} />;
+          {familyEvents.map((event) => {
+            return <EventCard key={event._id} event={event} />;
           })}
 
           <Modal
