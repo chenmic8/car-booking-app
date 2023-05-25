@@ -2,22 +2,25 @@ import { useContext, useState } from "react";
 import { LoadingContext } from "../context/loadingContext";
 import { post } from "../services/dataService";
 import { Stack, Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const AddEvent = () => {
+const EditEventModal = ({ event, handleClose }) => {
   let today = new Date();
   let hourFromNow = new Date();
   hourFromNow.setHours(today.getHours() + 1);
 
-  const { familyCars, familyLocations, familyUsers, family, user } =
+  const navigate = useNavigate();
+
+  const { familyCars, familyLocations, familyUsers, family } =
     useContext(LoadingContext);
-  const [title, setTitle] = useState("");
-  const [startTime, setStartTime] = useState(today);
-  const [endTime, setEndTime] = useState(hourFromNow);
-  const [startLocation, setStartLocation] = useState(family.address._id);
-  const [endLocation, setEndLocation] = useState("");
-  const [driver, setDriver] = useState(user._id);
-  const [riders, setRiders] = useState([]);
-  const [car, setCar] = useState(familyCars[0]._id);
+  const [title, setTitle] = useState(event.title);
+  const [startTime, setStartTime] = useState(event.startTime);
+  const [endTime, setEndTime] = useState(event.endTime);
+  const [startLocation, setStartLocation] = useState(event.startLocation._id);
+  const [endLocation, setEndLocation] = useState(event.endLocation._id);
+  const [driver, setDriver] = useState(event.driver._id);
+  const [riders, setRiders] = useState(event.riders);
+  const [car, setCar] = useState(event.car);
   const [eventFormErrorMessage, setEventFormErrorMessage] = useState("");
 
   const dateTimeDifferenceInMinutes = (startTime, endTime) => {
@@ -47,7 +50,18 @@ const AddEvent = () => {
     }
 
     try {
-      const createdEvent = post(`/events/create/${family._id}`, {
+      console.log("HERE IS FAKE EVENT CREATION AXIOS POST REQUEST", {
+        title,
+        startTime,
+        endTime,
+        startLocation,
+        endLocation,
+        driver,
+        riders,
+        car,
+      });
+
+      const updatedEvent = post(`/events/update/${event._id}`, {
         title,
         beginTime: startTime,
         endTime,
@@ -58,18 +72,20 @@ const AddEvent = () => {
         car,
         distanceMeters: 1,
       });
-      console.log("CREATED AN EVENT: ", createdEvent.data);
+      console.log("UPDATED AN EVENT: ", updatedEvent.data);
+      navigate("/events");
     } catch (error) {
       setEventFormErrorMessage("Server Error");
       console.log(error);
     }
   };
+
   return (
     <>
       <Box>
         <form onSubmit={handleSubmit}>
           <Stack>
-            <Typography variant='h5'>Add Event</Typography>
+            <Typography variant='h5'>Edit Event</Typography>
             {eventFormErrorMessage && <p>{eventFormErrorMessage}</p>}
             <label htmlFor='title'>Title:</label>
             <input
@@ -179,4 +195,4 @@ const AddEvent = () => {
   );
 };
 
-export default AddEvent;
+export default EditEventModal;

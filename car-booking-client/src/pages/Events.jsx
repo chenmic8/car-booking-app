@@ -1,11 +1,10 @@
 import { Box, Grid, Typography, Button, Modal } from "@mui/material";
 
 import EventCard from "../components/EventCard";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { LoadingContext } from "../context/loadingContext";
 import AddEvent from "../components/AddEventModal";
 
-import { get } from "../services/dataService";
 // import { AuthContext } from "../context/authContext";
 
 const style = {
@@ -26,10 +25,6 @@ const Events = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  useEffect(()=>{
-    console.log(familyEvents)
-  })
 
   return (
     <>

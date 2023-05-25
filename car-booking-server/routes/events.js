@@ -139,6 +139,7 @@ router.get("/details/:eventId", async (req, res, next) => {
 
 router.post("/update/:eventId", async (req, res, next) => {
   console.log("UPDATING EVENT");
+  
   try {
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.eventId,

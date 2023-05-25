@@ -37,7 +37,7 @@ const LoadingProvider = ({ children }) => {
         allFamilyEvents = [...allFamilyEvents, ...snapshot.events];
       }
       setFamilyEvents(allFamilyEvents);
-      setFamilyUsers(familyData.users);
+      setFamilyUsers(familyData.family.users);
       setFamilySnapshots(familyData.snapshots);
 
       setIsLoading(false);
