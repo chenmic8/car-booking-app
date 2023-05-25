@@ -20,12 +20,10 @@ import Family from "./pages/Family";
 import Locations from "./pages/Locations";
 
 function App() {
-  const { getToken } = useContext(LoadingContext);
+  const { getToken, user } = useContext(LoadingContext);
 
   return (
     <div className='App'>
-      {/* <Navbar /> */}
-
       {!getToken() && (
         <>
           <Routes>

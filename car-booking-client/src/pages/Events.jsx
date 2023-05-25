@@ -5,6 +5,9 @@ import { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../context/loadingContext";
 import AddEvent from "../components/AddEventModal";
 
+import { get } from "../services/dataService";
+// import { AuthContext } from "../context/authContext";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -18,45 +21,22 @@ const style = {
 };
 
 const Events = () => {
+  const { isLoading, familyEvents } = useContext(LoadingContext);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // const { events, setEvents } = useContext(LoadingContext);
-  const { familySnapshots, getFamilyInfo } = useContext(LoadingContext);
-
-  useEffect(() => {
-    console.log("MOUNTINT EVENTS");
-    getFamilyInfo();
-  }, []);
-
-  // console.log("EVENTS PAGE FAMILY EVENTS: ", familyEvents);
-  // const logFamilyEvents = async () => {
-  //   console.log("EVENTS PAGE GETTING FAMILY EVENTS: ", getFamilyEvents());
-  // };
-  // logFamilyEvents();
-  // useEffect(() => {
-  //   console.log("THIS IS THE FAMILY: ", family);
-  //   getFamilyEvents();
-  // }, []);
-  // console.log("fmaily snapshots on EVENTS PAGE", familySnapshots);
-  useEffect(() => {
-    console.log("GOT FAM SNAPSHOTS");
-  }, [familySnapshots]);
 
   return (
     <>
-      {familySnapshots ? (
+      {!isLoading ? (
         <>
           <Button onClick={handleOpen}>Add Event</Button>
           <Typography>Show week</Typography>
           <Typography>Show day</Typography>
 
-          {familySnapshots.map((snapshot) => {
-            // console.log(snapshot.events,'snapshot date')
-            return snapshot.events.map((event) => {
-              // console.log(event.name,'event name😊')
-              return <EventCard key={event._id} event={event} />;
-            });
+          {familyEvents.map((event,i) => {
+            return <EventCard key={i} event={event} />;
           })}
 
           <Modal

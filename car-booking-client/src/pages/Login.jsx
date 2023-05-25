@@ -8,7 +8,17 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const { googleSignup } = useContext(AuthContext);
   const { storeToken } = useContext(AuthContext);
-  const { setUser, getToken } = useContext(LoadingContext);
+  const {
+    setUser,
+    user,
+    getToken,
+    setFamily,
+    setFamilyCars,
+    setFamilyUsers,
+    setFamilySnapshots,
+    setFamilyEvents,
+    setFamilyLocations,
+  } = useContext(LoadingContext);
 
   const navigate = useNavigate();
 
@@ -28,6 +38,15 @@ const Login = () => {
       console.log("FOUND USER: ", foundUser.data);
       storeToken(foundUser.data.authToken);
       setUser(foundUser.data.user);
+
+      // const familyDataPromise = await `/families/user-family-info/${user._id}`;
+      // setFamily(familyDataPromise.data.family);
+      // setFamilyCars(familyDataPromise.data.family.cars);
+      // setFamilyUsers(familyDataPromise.data.family.users);
+      // setFamilySnapshots(familyDataPromise.data.snapshots);
+      // setFamilyEvents(familyDataPromise.data.snapshots.events);
+      // setFamilyLocations(familyDataPromise.data.locations);
+
       navigate("/events");
     } catch (error) {
       console.log(error);

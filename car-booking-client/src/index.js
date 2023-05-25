@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <GoogleOAuthProvider clientId='287469780305-pp6nvpk6g3vgua17t1dkulfsg1g3bruf.apps.googleusercontent.com'>
         <StyledEngineProvider injectFirst>
@@ -35,7 +35,7 @@ root.render(
         </StyledEngineProvider>
       </GoogleOAuthProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

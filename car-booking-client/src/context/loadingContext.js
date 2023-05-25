@@ -1,6 +1,5 @@
 import { createContext, useEffect, useState } from "react";
 import { get } from "../services/dataService";
-// import { useNavigate } from "react-router-dom";
 const LoadingContext = createContext();
 
 const LoadingProvider = ({ children }) => {
@@ -14,102 +13,45 @@ const LoadingProvider = ({ children }) => {
   const [familyCars, setFamilyCars] = useState([]);
   const [familyLocations, setFamilyLocations] = useState([]);
   const [familyUsers, setFamilyUsers] = useState([]);
-
-  // const navigate = useNavigate();
-
   const [errorMessage, setErrorMessage] = useState("");
 
   const getToken = () => {
     return localStorage.getItem("authToken");
   };
 
-  const getCars = async () => {
-    try {
-      const allCars = await get("/cars/all-cars");
-      setCars(allCars.data);
-      // console.log("LOGGING ALL CARS: ", cars);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const getFamilyInfo = async () => {
     try {
-      // setIsLoading(true);
-      const userFamily = await get(`/families/user-family/${user._id}`);
-      // const familyEvents = await get(
-      //   `/events/family-events/${userFamily.data._id}`
-      // );
-      console.log("USER IN GETFAMILYIFNO()", user);
-      const familySnapshotsPromise = get(
-        `/snapshots/family-snapshots/${userFamily.data._id}`
+      const familyDataPromise = await get(
+        `/families/user-family-info/${user._id}`
       );
-      console.log("USER FAMILY ID IN GETFAMINFO()", userFamily);
-      // const familyCars = await get(`/cars/family-cars/${userFamily.data._id}`);
-      const familyLocationsPromise = get(
-        `/locations/family-locations/${userFamily.data._id}`
-      );
+      console.log("GOT FAMILY DATA PROMISE", familyDataPromise.data);
 
-      console.log("FOUND USERS FAMILY: ", userFamily.data);
-      // console.log("FOUND USERS FAMILY CARS: ", familyCars.data);
+      const familyData = familyDataPromise.data;
 
-      setFamily(userFamily.data);
-      setFamilyCars(userFamily.data.cars);
-      setFamilyUsers(userFamily.data.users);
-      // const familyDatas = await Promise.all([
-      //   familySnapshotsPromise,
-      //   familyLocationsPromise,
-      // ]);
-      const familySnapshots = await familySnapshotsPromise;
-      setFamilySnapshots(familySnapshots.data);
-      console.log(
-        "FOUND USERS FAMILY SNAPSHOTS 😊😊😊: ",
-        familySnapshots.data
-      );
+      setFamily(familyData.family);
+      setFamilyLocations(familyData.locations);
+      setFamilyCars(familyData.family.cars);
 
-      const familyLocations = await familyLocationsPromise;
-      setFamilyLocations(familyLocations.data);
-      console.log("THESE ARE THE FAMILY LOCATIONS, 👍", familyLocations);
-      // setFamilyEvents(familyEvents.data);
-      setIsLoading(false);
-      // getFamilyEvents();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      let allFamilyEvents = [];
+      for (let snapshot of familyData.snapshots) {
+        allFamilyEvents = [...allFamilyEvents, snapshot.events];
+      }
+      setFamilyEvents(allFamilyEvents);
+      setFamilyUsers(familyData.users);
+      setFamilySnapshots(familyData.snapshots);
 
-  // const getFamilyEvents = async () => {
-  //   try {
-  //     const familyEvents = await get(`/events/family-events/${family._id}`);
-  //     console.log("FOUND FAMILY EVENTS: ", familyEvents.data);
-  //     setFamilyEvents(familyEvents.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  const getEvents = async () => {
-    try {
-      const allEvents = await get("/events/all-events");
-      console.log("GOT ALL EVENTS: ", allEvents.data);
-      setEvents(allEvents.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getToken();
-    // if (!getToken) navigate("/");
-    // getCars();
-    getFamilyInfo();
-    // getFamilyEvents();
-    // getFamilyEvents();
-    // getEvents();
-  }, [isLoading]);
-
-  // useEffect(()=>{},[])
+    if (user) {
+      getFamilyInfo();
+    }
+  }, [user]);
 
   return (
     <LoadingContext.Provider
@@ -125,12 +67,10 @@ const LoadingProvider = ({ children }) => {
         setCars,
         events,
         setEvents,
-        getEvents,
         family,
         setFamily,
         familyEvents,
         setFamilyEvents,
-        // getFamilyEvents,
         getFamilyInfo,
         familySnapshots,
         setFamilySnapshots,
