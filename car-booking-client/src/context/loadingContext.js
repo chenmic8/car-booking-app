@@ -5,6 +5,7 @@ const LoadingContext = createContext();
 const LoadingProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  
   const [cars, setCars] = useState([]);
   const [events, setEvents] = useState([]);
   const [family, setFamily] = useState({});

@@ -2,9 +2,9 @@ import { useContext, useEffect } from "react";
 import { LoadingContext } from "../context/loadingContext";
 
 const Family = () => {
-  const { family, isLoading } = useContext(LoadingContext);
+  const { family, isLoading, } = useContext(LoadingContext);
 
-  // useEffect(()=>{console.log('LOADING FAMILY!!')},[family])
+
 
   return (
     <>

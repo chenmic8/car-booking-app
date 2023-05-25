@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, Button, Modal } from "@mui/material";
+import { Box, Typography, Button, Modal } from "@mui/material";
 
 import EventCard from "../components/EventCard";
 import { useContext, useState } from "react";
