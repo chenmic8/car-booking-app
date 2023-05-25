@@ -29,7 +29,17 @@ const EditEventModal = ({ event, handleClose }) => {
     return (endMinutes - startMinutes) / 1000 / 60;
   };
 
-  const handleSubmit = (e) => {
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      await post(`/events/delete/${event._id}`)
+      handleClose()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (
       !title ||
@@ -61,7 +71,7 @@ const EditEventModal = ({ event, handleClose }) => {
         car,
       });
 
-      const updatedEvent = post(`/events/update/${event._id}`, {
+      const updatedEvent = await post(`/events/update/${event._id}`, {
         title,
         beginTime: startTime,
         endTime,
@@ -188,6 +198,8 @@ const EditEventModal = ({ event, handleClose }) => {
               })}
             </select>
             <button type='submit'>Submit</button>
+            <button type="button" onClick={handleDelete}>Delete</button>
+            <button type="button" onClick={handleClose}>Close</button>
           </Stack>
         </form>
       </Box>

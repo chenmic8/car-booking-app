@@ -44,8 +44,25 @@ router.get("/details/:carId", async (req, res, next) => {
 });
 
 router.post("/create", async (req, res, next) => {
+  console.log("CREATING CAR");
   try {
     const createdCar = await Car.create(req.body);
+    res.json(createdCar);
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+});
+router.post("/create/:familyId", async (req, res, next) => {
+  console.log("CREATING CAR");
+  try {
+    const createdCar = await Car.create(req.body);
+    
+    await Family.findOneAndUpdate(
+      { _id: req.params.familyId },
+      { $addToSet: { cars: req.body } },
+      { new: true, upsert: true }
+    );
+    
     res.json(createdCar);
   } catch (error) {
     res.status(404).json({ message: error });

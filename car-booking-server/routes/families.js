@@ -3,6 +3,7 @@ var express = require("express");
 var router = express.Router();
 const Family = require("../models/Family");
 const Snapshot = require("../models/Snapshot");
+var ObjectId = require("mongoose").Types.ObjectId;
 
 // const oauth2Client = new google.auth.OAuth2(
 //   CLIENT_ID,
@@ -40,6 +41,54 @@ router.get("/users-families/:userId", async (req, res, next) => {
   } catch (error) {
     res.status(404).json({ message: error });
   }
+});
+
+//add user to family
+router.post("/add-member/:familyId", async (req, res, next) => {
+  const { userId } = req.body;
+  const familyId = req.params.familyId;
+  try {
+    console.log("ADDING USER TO FAMILY");
+
+    //check if user is in another family already and if already in this family
+    const userFamilyExists = await Family.exists({ users: userId });
+    if (userFamilyExists) {
+      const foundUserFamily = await Family.findOne({ users: userId });
+      if (foundUserFamily._id.toString() !== familyId) {
+        res.status(500).json({ message: "User belongs to another family" });
+        return;
+      }
+    }
+    //upsert user to family
+    const upsertedFamily = await Family.findOneAndUpdate(
+      { _id: familyId },
+      { $addToSet: { users: userId } },
+      { new: true, upsert: true }
+    );
+    res.json(upsertedFamily);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+});
+
+//join family
+router.post("/join-other-family/:userId", async (req, res, next) => {
+  const userId = req.params.userId;
+  const { newFamilyId } = req.body;
+  const currentUserFamily = await Family.updateMany(
+    { users: userId },
+    { $pull: { users: { _id: userId } } }
+  );
+  console.log(currentUserFamily, "OLD FAMILY WIHTOUT THIS USER", userId);
+  const updatedNewFamily = await Family.findOneAndUpdate(
+    { _id: newFamilyId },
+    { $addToSet: { users: new ObjectId(userId) } },
+    { new: true, upsert: true }
+  );
+  console.log("NEW FAMILY", updatedNewFamily);
+  res.json(currentUserFamily);
+
+  //find newfammily and insert user
 });
 
 //GETS FAMILY SNAPSHOTS, LOCATIONS, AND FAMILY DETAILS
